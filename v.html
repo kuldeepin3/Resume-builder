@@ -1,0 +1,1477 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-item {
+            margin: 0 0.5rem;
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link i {
+            margin-right: 5px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.btn-register {
+            background-color: #ff6b6b;
+        }
+
+        .nav-link.btn-register:hover {
+            background-color: #ff5252;
+        }
+
+        .nav-link.btn-login {
+            background-color: #4ecdc4;
+        }
+
+        .nav-link.btn-login:hover {
+            background-color: #3dbdb4;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            padding: 0.5rem 0;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #2575fc;
+        }
+
+        .dropdown-item i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-section {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .preview-section {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button.action-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button.action-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .add-btn, .remove-btn {
+            background-color: #2ecc71;
+        }
+
+        .add-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .download-btn {
+            background-color: #9b59b6;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .download-btn:hover {
+            background-color: #8e44ad;
+        }
+
+        /* Resume Preview Styles */
+        .resume {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .resume-header h2 {
+            color: #2c3e50;
+            border-bottom: none;
+            margin: 5px 0;
+            font-size: 24px;
+        }
+
+        .resume-header p {
+            margin: 5px 0;
+            color: #7f8c8d;
+        }
+
+        .resume-section {
+            margin-bottom: 15px;
+        }
+
+        .resume-section h3 {
+            color: #2c3e50;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .experience-item, .education-item, .certification-item, .achievement-item, .volunteer-item, .project-item {
+            margin-bottom: 15px;
+        }
+
+        .job-title, .degree, .cert-name, .achievement-name, .volunteer-role, .project-name {
+            font-weight: bold;
+        }
+
+        .company, .school, .cert-issuer, .achievement-issuer, .volunteer-org {
+            font-style: italic;
+        }
+
+        .date {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .language-item {
+            margin-bottom: 5px;
+        }
+
+        .cert-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .cert-link:hover {
+            text-decoration: underline;
+        }
+
+        .technologies-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0;
+        }
+
+        .technology {
+            background-color: #9b59b6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+
+        .project-role {
+            font-style: italic;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .download-btn {
+                position: static;
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #6a11cb;
+                padding: 1rem;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            }
+            
+            .navbar-nav.active {
+                display: flex;
+            }
+            
+            .nav-item {
+                margin: 0.5rem 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background-color: rgba(255, 255, 255, 0.1);
+                margin-top: 0.5rem;
+                border-radius: 4px;
+            }
+            
+            .dropdown-item {
+                color: white;
+                padding: 0.5rem 1rem;
+            }
+            
+            .dropdown-item:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">
+            <i class="fas fa-file-alt"></i> Resume Builder
+        </a>
+        
+        <button class="hamburger" id="hamburger-menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="navbar-nav" id="navbar-nav">
+            <li class="nav-item">
+                <a href="home.html" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="templates.html" class="nav-link">
+                    <i class="fas fa-magic"></i> Templates <i class="fas fa-chevron-down" style="margin-left: 5px; font-size: 0.8rem;"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="templates.html" class="dropdown-item">
+                        <i class="fas fa-file-alt"></i> Templates
+                    </a>
+                    <a href="templates2.html" class="dropdown-item">
+                        <i class="fas fa-paint-brush"></i> Templates
+                    </a>
+                </div>
+            </li>
+            <!--
+            <li class="nav-item">
+                <a href="#" class="nav-link btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link btn-register">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+            </li>
+            --->
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="form-section">
+            <h2>Languages</h2>
+            <div id="languages-container">
+                <div class="language-form">
+                    <div class="form-group">
+                        <label for="language1">Language</label>
+                        <input type="text" id="language1" placeholder="English">
+                    </div>
+                    <div class="form-group">
+                        <label for="proficiency1">Proficiency Level</label>
+                        <select id="proficiency1">
+                            <option value="">Select Proficiency</option>
+                            <option value="Native">Native</option>
+                            <option value="Fluent">Fluent</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Basic">Basic</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-language">Add Another Language</button>
+
+            <h2>Personal Information</h2>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="John Doe">
+            </div>
+             
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" placeholder="(123) 456-7890">
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" placeholder="123 Main St, City, Country">
+            </div>
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+            </div>
+            <div class="form-group">
+                <label for="github">GitHub Profile</label>
+                <input type="url" id="github" placeholder="https://github.com/yourusername">
+            </div>
+
+            <h2>Professional Summary</h2>
+            <div class="form-group">
+                <textarea id="summary" placeholder="Experienced professional with skills in..."></textarea>
+            </div>
+
+            <h2>Work Experience</h2>
+            <div id="experience-container">
+                <div class="experience-form">
+                    <div class="form-group">
+                        <label for="jobTitle1">Job Title</label>
+                        <input type="text" id="jobTitle1" placeholder="Software Developer">
+                    </div>
+                    <div class="form-group">
+                        <label for="company1">Company</label>
+                        <input type="text" id="company1" placeholder="Tech Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobStartDate1">Start Date</label>
+                        <input type="text" id="jobStartDate1" placeholder="June 2020">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobEndDate1">End Date</label>
+                        <input type="text" id="jobEndDate1" placeholder="Present">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobDescription1">Description</label>
+                        <textarea id="jobDescription1" placeholder="Responsibilities and achievements..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-experience">Add Another Experience</button>
+
+            <h2>Education</h2>
+            <div id="education-container">
+                <div class="education-form">
+                    <div class="form-group">
+                        <label for="degree1">Degree</label>
+                        <select id="degree1">
+                            <option value="">Select Degree</option>
+                            <option value="Bachelor of Technology (B.Tech)">Bachelor of Technology (B.Tech)</option>
+                            <option value="Master of Technology (M.Tech)">Master of Technology (M.Tech)</option>
+                            <option value="Bachelor of Engineering (B.E.)">Bachelor of Engineering (B.E.)</option>
+                            <option value="Master of Engineering (M.E.)">Master of Engineering (M.E.)</option>
+                            <option value="Bachelor of Science (B.Sc)">Bachelor of Science (B.Sc)</option>
+                            <option value="Master of Science (M.Sc)">Master of Science (M.Sc)</option>
+                            <option value="Bachelor of Computer Applications (BCA)">Bachelor of Computer Applications (BCA)</option>
+                            <option value="Master of Computer Applications (MCA)">Master of Computer Applications (MCA)</option>
+                            <option value="Bachelor of Business Administration (BBA)">Bachelor of Business Administration (BBA)</option>
+                            <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
+                            <option value="Bachelor of Commerce (B.Com)">Bachelor of Commerce (B.Com)</option>
+                            <option value="Master of Commerce (M.Com)">Master of Commerce (M.Com)</option>
+                            <option value="Bachelor of Arts (B.A.)">Bachelor of Arts (B.A.)</option>
+                            <option value="Master of Arts (M.A.)">Master of Arts (M.A.)</option>
+                            <option value="Doctor of Philosophy (Ph.D)">Doctor of Philosophy (Ph.D)</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Other">Other (Please specify)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="other-degree-container" style="display: none;">
+                        <label for="otherDegree1">Other Degree Name</label>
+                        <input type="text" id="otherDegree1" placeholder="Enter degree name">
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldOfStudy1">Field of Study</label>
+                        <select id="fieldOfStudy1">
+                            <option value="">Select Field of Study</option>
+                            <option value="Computer Science Engineering">Computer Science Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="Biotechnology">Biotechnology</option>
+                            <option value="Pharmacy">Pharmacy</option>
+                            <option value="Microbiology">Microbiology</option>
+                            <option value="MBBS">MBBS</option>
+                            <option value="BDS (Dental Surgery)">BDS (Dental Surgery)</option>
+                            <option value="BAMS (Ayurvedic Medicine)">BAMS (Ayurvedic Medicine)</option>
+                            <option value="BHMS (Homeopathic Medicine)">BHMS (Homeopathic Medicine)</option>
+                            <option value="BPT (Physiotherapy)">BPT (Physiotherapy)</option>
+                            <option value="B.Sc Nursing">B.Sc Nursing</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Accounting">Accounting</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="English Literature">English Literature</option>
+                            <option value="History">History</option>
+                            <option value="Political Science">Political Science</option>
+                            <option value="Psychology">Psychology</option>
+                            <option value="Sociology">Sociology</option>
+                            <option value="Law">Law</option>
+                            <option value="Architecture">Architecture</option>
+                            <option value="Fine Arts">Fine Arts</option>
+                            <option value="Journalism & Mass Communication">Journalism & Mass Communication</option>
+                            <option value="Hotel Management">Hotel Management</option>
+                            <option value="Fashion Design">Fashion Design</option>
+                            <option value="Other">Other (Please specify)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="other-field-container" style="display: none;">
+                        <label for="otherField1">Other Field of Study</label>
+                        <input type="text" id="otherField1" placeholder="Enter field of study">
+                    </div>
+                    <div class="form-group">
+                        <label for="school1">School/College</label>
+                        <select id="school1">
+                            <option value="">Select College in Vadodara</option>
+                            <option value="Maharaja Sayajirao University of Baroda">Maharaja Sayajirao University of Baroda</option>
+                            <option value="Sardar Vallabhbhai Patel Institute of Technology">Sardar Vallabhbhai Patel Institute of Technology</option>
+                            <option value="Baroda Medical College">Baroda Medical College</option>
+                            <option value="Faculty of Technology and Engineering, MSU">Faculty of Technology and Engineering, MSU</option>
+                            <option value="A. D. Patel Institute of Technology">A. D. Patel Institute of Technology</option>
+                            <option value="Parul University">Parul University</option>
+                            <option value="Navrachana University">Navrachana University</option>
+                            <option value="Baroda Institute of Management Studies">Baroda Institute of Management Studies</option>
+                            <option value="K. M. Kundnani College of Pharmacy">K. M. Kundnani College of Pharmacy</option>
+                            <option value="S. S. Agarwal College of Arts & Commerce">S. S. Agarwal College of Arts & Commerce</option>
+                            <option value="Maharaja Pratapsinh Arts and Science College">Maharaja Pratapsinh Arts and Science College</option>
+                            <option value="Sir P. T. Sarvajanik College of Science">Sir P. T. Sarvajanik College of Science</option>
+                            <option value="K. M. Mehta Arts and Commerce College">K. M. Mehta Arts and Commerce College</option>
+                            <option value="M. G. Science Institute">M. G. Science Institute</option>
+                            <option value="Baroda College of Pharmacy">Baroda College of Pharmacy</option>
+                            <option value="Other">Other (Please specify)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="other-school-container" style="display: none;">
+                        <label for="otherSchool1">Other School/College Name</label>
+                        <input type="text" id="otherSchool1" placeholder="Enter school/college name">
+                    </div>
+                    <div class="form-group">
+                        <label for="educationStartDate1">Start Date</label>
+                        <input type="text" id="educationStartDate1" placeholder="September 2016">
+                    </div>
+                    <div class="form-group">
+                        <label for="educationEndDate1">End Date</label>
+                        <input type="text" id="educationEndDate1" placeholder="May 2020">
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-education">Add Another Education</button>
+
+            <h2>Certifications</h2>
+            <div id="certifications-container">
+                <div class="certification-form">
+                    <div class="form-group">
+                        <label for="certificationName1">Certification Name</label>
+                        <input type="text" id="certificationName1" placeholder="AWS Certified Solutions Architect">
+                    </div>
+                    <div class="form-group">
+                        <label for="certificationIssuer1">Issuing Organization</label>
+                        <input type="text" id="certificationIssuer1" placeholder="Amazon Web Services">
+                    </div>
+                    <div class="form-group">
+                        <label for="certificationDate1">Date Earned</label>
+                        <input type="text" id="certificationDate1" placeholder="June 2023">
+                    </div>
+                    <div class="form-group">
+                        <label for="certificationLink1">Verification Link/License ID</label>
+                        <input type="text" id="certificationLink1" placeholder="https://www.credly.com/users/johndoe/badges or License #ABC123">
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-certification">Add Another Certification</button>
+
+            <h2>Achievements & Awards</h2>
+            <div id="achievements-container">
+                <div class="achievement-form">
+                    <div class="form-group">
+                        <label for="achievement1">Achievement/Award</label>
+                        <input type="text" id="achievement1" placeholder="Employee of the Month">
+                    </div>
+                    <div class="form-group">
+                        <label for="achievementIssuer1">Issuing Organization</label>
+                        <input type="text" id="achievementIssuer1" placeholder="Tech Company Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="achievementDate1">Date Received</label>
+                        <input type="text" id="achievementDate1" placeholder="March 2023">
+                    </div>
+                    <div class="form-group">
+                        <label for="achievementDescription1">Description</label>
+                        <textarea id="achievementDescription1" placeholder="Brief description of the achievement..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-achievement">Add Another Achievement</button>
+
+            <h2>Skills</h2>
+            <div id="skills-container">
+                <div class="form-group">
+                    <input type="text" id="skill1" placeholder="JavaScript">
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-skill">Add Another Skill</button>
+
+            <h2>Projects</h2>
+            <div id="projects-container">
+                <div class="project-form">
+                    <div class="form-group">
+                        <label for="projectName1">Project Name</label>
+                        <input type="text" id="projectName1" placeholder="E-commerce Website">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription1">Description</label>
+                        <textarea id="projectDescription1" placeholder="Details about the project..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectTechnologies1">Technologies Used</label>
+                        <input type="text" id="projectTechnologies1" placeholder="React, Node.js, MongoDB, AWS">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectRole1">Your Role/Contribution</label>
+                        <textarea id="projectRole1" placeholder="Describe your specific role and contributions..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn action-btn" id="add-project">Add Another Project</button>
+        </div>
+
+        <div class="preview-section">
+            <h2>Resume Preview</h2>
+            <button class="download-btn action-btn" id="download-pdf">Download PDF</button>
+            <div class="resume" id="resume-preview">
+                <!-- Resume content will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 ResumeBuilder Pro. All rights reserved.</p>
+    </footer>
+
+    <!-- Include html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Check if user was redirected from login
+        if (document.referrer.includes('login.php') || document.referrer.includes('login-process.php')) {
+            // Show success message
+            setTimeout(function() {
+                alert('🎉 Login Successful! Welcome to your account.');
+            }, 500);
+        }
+
+        // Alternative: Check URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('login') === 'success') {
+            setTimeout(function() {
+                alert('🎉 Login Successful! Welcome to your account.');
+            }, 500);
+            
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Mobile menu toggle
+        document.getElementById('hamburger-menu').addEventListener('click', function() {
+            document.getElementById('navbar-nav').classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('navbar-nav');
+            const hamburger = document.getElementById('hamburger-menu');
+            
+            if (!nav.contains(event.target) && event.target !== hamburger) {
+                nav.classList.remove('active');
+            }
+        });
+
+        // Initialize counters for dynamic fields
+        let experienceCount = 1;
+        let educationCount = 1;
+        let certificationCount = 1;
+        let languageCount = 1;
+        let achievementCount = 1;
+        let skillCount = 1;
+        let projectCount = 1;
+        
+        // Add experience field
+        document.getElementById('add-experience').addEventListener('click', function() {
+            experienceCount++;
+            const newExperience = document.createElement('div');
+            newExperience.className = 'experience-form';
+            newExperience.innerHTML = `
+                <button class="remove-btn action-btn remove-experience" data-id="${experienceCount}">Remove</button>
+                <div class="form-group">
+                    <label for="jobTitle${experienceCount}">Job Title</label>
+                    <input type="text" id="jobTitle${experienceCount}" placeholder="Software Developer">
+                </div>
+                <div class="form-group">
+                    <label for="company${experienceCount}">Company</label>
+                    <input type="text" id="company${experienceCount}" placeholder="Tech Inc.">
+                </div>
+                <div class="form-group">
+                    <label for="jobStartDate${experienceCount}">Start Date</label>
+                    <input type="text" id="jobStartDate${experienceCount}" placeholder="June 2020">
+                </div>
+                <div class="form-group">
+                    <label for="jobEndDate${experienceCount}">End Date</label>
+                    <input type="text" id="jobEndDate${experienceCount}" placeholder="Present">
+                </div>
+                <div class="form-group">
+                    <label for="jobDescription${experienceCount}">Description</label>
+                    <textarea id="jobDescription${experienceCount}" placeholder="Responsibilities and achievements..."></textarea>
+                </div>
+            `;
+            document.getElementById('experience-container').appendChild(newExperience);
+        });
+        
+        // Add education field
+        document.getElementById('add-education').addEventListener('click', function() {
+            educationCount++;
+            const newEducation = document.createElement('div');
+            newEducation.className = 'education-form';
+            newEducation.innerHTML = `
+                <button class="remove-btn action-btn remove-education" data-id="${educationCount}">Remove</button>
+                <div class="form-group">
+                    <label for="degree${educationCount}">Degree</label>
+                    <select id="degree${educationCount}">
+                        <option value="">Select Degree</option>
+                        <option value="Bachelor of Technology (B.Tech)">Bachelor of Technology (B.Tech)</option>
+                        <option value="Master of Technology (M.Tech)">Master of Technology (M.Tech)</option>
+                        <option value="Bachelor of Engineering (B.E.)">Bachelor of Engineering (B.E.)</option>
+                        <option value="Master of Engineering (M.E.)">Master of Engineering (M.E.)</option>
+                        <option value="Bachelor of Science (B.Sc)">Bachelor of Science (B.Sc)</option>
+                        <option value="Master of Science (M.Sc)">Master of Science (M.Sc)</option>
+                        <option value="Bachelor of Computer Applications (BCA)">Bachelor of Computer Applications (BCA)</option>
+                        <option value="Master of Computer Applications (MCA)">Master of Computer Applications (MCA)</option>
+                        <option value="Bachelor of Business Administration (BBA)">Bachelor of Business Administration (BBA)</option>
+                        <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
+                        <option value="Bachelor of Commerce (B.Com)">Bachelor of Commerce (B.Com)</option>
+                        <option value="Master of Commerce (M.Com)">Master of Commerce (M.Com)</option>
+                        <option value="Bachelor of Arts (B.A.)">Bachelor of Arts (B.A.)</option>
+                        <option value="Master of Arts (M.A.)">Master of Arts (M.A.)</option>
+                        <option value="Doctor of Philosophy (Ph.D)">Doctor of Philosophy (Ph.D)</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Other">Other (Please specify)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="other-degree-container${educationCount}" style="display: none;">
+                    <label for="otherDegree${educationCount}">Other Degree Name</label>
+                    <input type="text" id="otherDegree${educationCount}" placeholder="Enter degree name">
+                </div>
+                <div class="form-group">
+                    <label for="fieldOfStudy${educationCount}">Field of Study</label>
+                    <select id="fieldOfStudy${educationCount}">
+                        <option value="">Select Field of Study</option>
+                        <option value="Computer Science Engineering">Computer Science Engineering</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Chemical Engineering">Chemical Engineering</option>
+                        <option value="Biotechnology">Biotechnology</option>
+                        <option value="Pharmacy">Pharmacy</option>
+                        <option value="Microbiology">Microbiology</option>
+                        <option value="MBBS">MBBS</option>
+                        <option value="BDS (Dental Surgery)">BDS (Dental Surgery)</option>
+                        <option value="BAMS (Ayurvedic Medicine)">BAMS (Ayurvedic Medicine)</option>
+                        <option value="BHMS (Homeopathic Medicine)">BHMS (Homeopathic Medicine)</option>
+                        <option value="BPT (Physiotherapy)">BPT (Physiotherapy)</option>
+                        <option value="B.Sc Nursing">B.Sc Nursing</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Economics">Economics</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Accounting">Accounting</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="English Literature">English Literature</option>
+                        <option value="History">History</option>
+                        <option value="Political Science">Political Science</option>
+                        <option value="Psychology">Psychology</option>
+                        <option value="Sociology">Sociology</option>
+                        <option value="Law">Law</option>
+                        <option value="Architecture">Architecture</option>
+                        <option value="Fine Arts">Fine Arts</option>
+                        <option value="Journalism & Mass Communication">Journalism & Mass Communication</option>
+                        <option value="Hotel Management">Hotel Management</option>
+                        <option value="Fashion Design">Fashion Design</option>
+                        <option value="Other">Other (Please specify)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="other-field-container${educationCount}" style="display: none;">
+                    <label for="otherField${educationCount}">Other Field of Study</label>
+                    <input type="text" id="otherField${educationCount}" placeholder="Enter field of study">
+                </div>
+                <div class="form-group">
+                    <label for="school${educationCount}">School/College</label>
+                    <select id="school${educationCount}">
+                        <option value="">Select College in Vadodara</option>
+                        <option value="Maharaja Sayajirao University of Baroda">Maharaja Sayajirao University of Baroda</option>
+                        <option value="Sardar Vallabhbhai Patel Institute of Technology">Sardar Vallabhbhai Patel Institute of Technology</option>
+                        <option value="Baroda Medical College">Baroda Medical College</option>
+                        <option value="Faculty of Technology and Engineering, MSU">Faculty of Technology and Engineering, MSU</option>
+                        <option value="A. D. Patel Institute of Technology">A. D. Patel Institute of Technology</option>
+                        <option value="Parul University">Parul University</option>
+                        <option value="Navrachana University">Navrachana University</option>
+                        <option value="Baroda Institute of Management Studies">Baroda Institute of Management Studies</option>
+                        <option value="K. M. Kundnani College of Pharmacy">K. M. Kundnani College of Pharmacy</option>
+                        <option value="S. S. Agarwal College of Arts & Commerce">S. S. Agarwal College of Arts & Commerce</option>
+                        <option value="Maharaja Pratapsinh Arts and Science College">Maharaja Pratapsinh Arts and Science College</option>
+                        <option value="Sir P. T. Sarvajanik College of Science">Sir P. T. Sarvajanik College of Science</option>
+                        <option value="K. M. Mehta Arts and Commerce College">K. M. Mehta Arts and Commerce College</option>
+                        <option value="M. G. Science Institute">M. G. Science Institute</option>
+                        <option value="Baroda College of Pharmacy">Baroda College of Pharmacy</option>
+                        <option value="Other">Other (Please specify)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="other-school-container${educationCount}" style="display: none;">
+                    <label for="otherSchool${educationCount}">Other School/College Name</label>
+                    <input type="text" id="otherSchool${educationCount}" placeholder="Enter school/college name">
+                </div>
+                <div class="form-group">
+                    <label for="educationStartDate${educationCount}">Start Date</label>
+                    <input type="text" id="educationStartDate${educationCount}" placeholder="September 2016">
+                </div>
+                <div class="form-group">
+                    <label for="educationEndDate${educationCount}">End Date</label>
+                    <input type="text" id="educationEndDate${educationCount}" placeholder="May 2020">
+                </div>
+            `;
+            document.getElementById('education-container').appendChild(newEducation);
+            
+            // Add event listeners for the new dropdowns
+            document.getElementById(`degree${educationCount}`).addEventListener('change', function() {
+                const otherContainer = document.getElementById(`other-degree-container${educationCount}`);
+                if (this.value === 'Other') {
+                    otherContainer.style.display = 'block';
+                } else {
+                    otherContainer.style.display = 'none';
+                }
+            });
+            
+            document.getElementById(`fieldOfStudy${educationCount}`).addEventListener('change', function() {
+                const otherContainer = document.getElementById(`other-field-container${educationCount}`);
+                if (this.value === 'Other') {
+                    otherContainer.style.display = 'block';
+                } else {
+                    otherContainer.style.display = 'none';
+                }
+            });
+            
+            document.getElementById(`school${educationCount}`).addEventListener('change', function() {
+                const otherContainer = document.getElementById(`other-school-container${educationCount}`);
+                if (this.value === 'Other') {
+                    otherContainer.style.display = 'block';
+                } else {
+                    otherContainer.style.display = 'none';
+                }
+            });
+        });
+        
+        // Add event listeners for the first education dropdowns
+        document.getElementById('degree1').addEventListener('change', function() {
+            const otherContainer = document.getElementById('other-degree-container');
+            if (this.value === 'Other') {
+                otherContainer.style.display = 'block';
+            } else {
+                otherContainer.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('fieldOfStudy1').addEventListener('change', function() {
+            const otherContainer = document.getElementById('other-field-container');
+            if (this.value === 'Other') {
+                otherContainer.style.display = 'block';
+            } else {
+                otherContainer.style.display = 'none';
+            }
+        });
+        
+        document.getElementById('school1').addEventListener('change', function() {
+            const otherContainer = document.getElementById('other-school-container');
+            if (this.value === 'Other') {
+                otherContainer.style.display = 'block';
+            } else {
+                otherContainer.style.display = 'none';
+            }
+        });
+        
+        // Add certification field
+        document.getElementById('add-certification').addEventListener('click', function() {
+            certificationCount++;
+            const newCertification = document.createElement('div');
+            newCertification.className = 'certification-form';
+            newCertification.innerHTML = `
+                <button class="remove-btn action-btn remove-certification" data-id="${certificationCount}">Remove</button>
+                <div class="form-group">
+                    <label for="certificationName${certificationCount}">Certification Name</label>
+                    <input type="text" id="certificationName${certificationCount}" placeholder="AWS Certified Solutions Architect">
+                </div>
+                <div class="form-group">
+                    <label for="certificationIssuer${certificationCount}">Issuing Organization</label>
+                    <input type="text" id="certificationIssuer${certificationCount}" placeholder="Amazon Web Services">
+                </div>
+                <div class="form-group">
+                    <label for="certificationDate${certificationCount}">Date Earned</label>
+                    <input type="text" id="certificationDate${certificationCount}" placeholder="June 2023">
+                </div>
+                <div class="form-group">
+                    <label for="certificationLink${certificationCount}">Verification Link/License ID</label>
+                    <input type="text" id="certificationLink${certificationCount}" placeholder="https://www.credly.com/users/johndoe/badges or License #ABC123">
+                </div>
+            `;
+            document.getElementById('certifications-container').appendChild(newCertification);
+        });
+        
+        // Add language field
+        document.getElementById('add-language').addEventListener('click', function() {
+            languageCount++;
+            const newLanguage = document.createElement('div');
+            newLanguage.className = 'language-form';
+            newLanguage.innerHTML = `
+                <button class="remove-btn action-btn remove-language" data-id="${languageCount}">Remove</button>
+                <div class="form-group">
+                    <label for="language${languageCount}">Language</label>
+                    <input type="text" id="language${languageCount}" placeholder="English">
+                </div>
+                <div class="form-group">
+                    <label for="proficiency${languageCount}">Proficiency Level</label>
+                    <select id="proficiency${languageCount}">
+                        <option value="">Select Proficiency</option>
+                        <option value="Native">Native</option>
+                        <option value="Fluent">Fluent</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Basic">Basic</option>
+                    </select>
+                </div>
+            `;
+            document.getElementById('languages-container').appendChild(newLanguage);
+        });
+        
+        // Add achievement field
+        document.getElementById('add-achievement').addEventListener('click', function() {
+            achievementCount++;
+            const newAchievement = document.createElement('div');
+            newAchievement.className = 'achievement-form';
+            newAchievement.innerHTML = `
+                <button class="remove-btn action-btn remove-achievement" data-id="${achievementCount}">Remove</button>
+                <div class="form-group">
+                    <label for="achievement${achievementCount}">Achievement/Award</label>
+                    <input type="text" id="achievement${achievementCount}" placeholder="Employee of the Month">
+                </div>
+                <div class="form-group">
+                    <label for="achievementIssuer${achievementCount}">Issuing Organization</label>
+                    <input type="text" id="achievementIssuer${achievementCount}" placeholder="Tech Company Inc.">
+                </div>
+                <div class="form-group">
+                    <label for="achievementDate${achievementCount}">Date Received</label>
+                    <input type="text" id="achievementDate${achievementCount}" placeholder="March 2023">
+                </div>
+                <div class="form-group">
+                    <label for="achievementDescription${achievementCount}">Description</label>
+                    <textarea id="achievementDescription${achievementCount}" placeholder="Brief description of the achievement..."></textarea>
+                </div>
+            `;
+            document.getElementById('achievements-container').appendChild(newAchievement);
+        });
+        
+        // Add skill field
+        document.getElementById('add-skill').addEventListener('click', function() {
+            skillCount++;
+            const newSkill = document.createElement('div');
+            newSkill.className = 'form-group';
+            newSkill.innerHTML = `
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="skill${skillCount}" placeholder="JavaScript">
+                    <button class="remove-btn action-btn remove-skill" data-id="${skillCount}">Remove</button>
+                </div>
+            `;
+            document.getElementById('skills-container').appendChild(newSkill);
+        });
+        
+        // Add project field
+        document.getElementById('add-project').addEventListener('click', function() {
+            projectCount++;
+            const newProject = document.createElement('div');
+            newProject.className = 'project-form';
+            newProject.innerHTML = `
+                <button class="remove-btn action-btn remove-project" data-id="${projectCount}">Remove</button>
+                <div class="form-group">
+                    <label for="projectName${projectCount}">Project Name</label>
+                    <input type="text" id="projectName${projectCount}" placeholder="E-commerce Website">
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription${projectCount}">Description</label>
+                    <textarea id="projectDescription${projectCount}" placeholder="Details about the project..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectTechnologies${projectCount}">Technologies Used</label>
+                    <input type="text" id="projectTechnologies${projectCount}" placeholder="React, Node.js, MongoDB, AWS">
+                </div>
+                <div class="form-group">
+                    <label for="projectRole${projectCount}">Your Role/Contribution</label>
+                    <textarea id="projectRole${projectCount}" placeholder="Describe your specific role and contributions..."></textarea>
+                </div>
+            `;
+            document.getElementById('projects-container').appendChild(newProject);
+        });
+        
+        // Remove fields dynamically
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-experience')) {
+                const experienceToRemove = e.target.parentElement;
+                experienceToRemove.remove();
+            }
+            
+            if (e.target.classList.contains('remove-education')) {
+                const educationToRemove = e.target.parentElement;
+                educationToRemove.remove();
+            }
+            
+            if (e.target.classList.contains('remove-certification')) {
+                const certificationToRemove = e.target.parentElement;
+                certificationToRemove.remove();
+            }
+            
+            if (e.target.classList.contains('remove-language')) {
+                const languageToRemove = e.target.parentElement;
+                languageToRemove.remove();
+            }
+            
+            if (e.target.classList.contains('remove-achievement')) {
+                const achievementToRemove = e.target.parentElement;
+                achievementToRemove.remove();
+            }
+            
+            if (e.target.classList.contains('remove-skill')) {
+                const skillToRemove = e.target.parentElement.parentElement;
+                skillToRemove.remove();
+            }
+            
+            if (e.target.classList.contains('remove-project')) {
+                const projectToRemove = e.target.parentElement;
+                projectToRemove.remove();
+            }
+        });
+        
+        // Update preview on any input change
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('input', updateResumePreview);
+            element.addEventListener('change', updateResumePreview);
+        });
+        
+        // Initial preview update
+        updateResumePreview();
+        
+        // Download PDF
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const element = document.getElementById('resume-preview');
+            const opt = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Make sure html2pdf is available
+            if (typeof html2pdf !== 'undefined') {
+                html2pdf().from(element).set(opt).save();
+            } else {
+                alert('PDF generation library not loaded. Please try again.');
+            }
+        });
+        
+        // Function to update resume preview
+        function updateResumePreview() {
+            const resumePreview = document.getElementById('resume-preview');
+            
+            // Personal Information
+            const fullName = document.getElementById('fullName').value || 'Your Name';
+            const email = document.getElementById('email').value || 'your.email@example.com';
+            const phone = document.getElementById('phone').value || '(123) 456-7890';
+            const address = document.getElementById('address').value || 'City, Country';
+            const linkedin = document.getElementById('linkedin').value;
+            const github = document.getElementById('github').value;
+            
+            // Professional Summary
+            const summary = document.getElementById('summary').value || 'Experienced professional with skills in...';
+            
+            // Languages
+            let languagesHTML = '';
+            for (let i = 1; i <= languageCount; i++) {
+                if (!document.getElementById(`language${i}`)) continue;
+                
+                const language = document.getElementById(`language${i}`).value;
+                const proficiency = document.getElementById(`proficiency${i}`).value;
+                
+                if (language) {
+                    languagesHTML += `<div class="language-item">${language} - ${proficiency}</div>`;
+                }
+            }
+            
+            // Work Experience
+            let experiencesHTML = '';
+            for (let i = 1; i <= experienceCount; i++) {
+                if (!document.getElementById(`jobTitle${i}`)) continue;
+                
+                const jobTitle = document.getElementById(`jobTitle${i}`).value || 'Job Title';
+                const company = document.getElementById(`company${i}`).value || 'Company Name';
+                const jobStartDate = document.getElementById(`jobStartDate${i}`).value || 'Start Date';
+                const jobEndDate = document.getElementById(`jobEndDate${i}`).value || 'End Date';
+                const jobDescription = document.getElementById(`jobDescription${i}`).value || 'Responsibilities and achievements...';
+                
+                experiencesHTML += `
+                    <div class="experience-item">
+                        <div class="job-title">${jobTitle}</div>
+                        <div class="company">${company}</div>
+                        <div class="date">${jobStartDate} - ${jobEndDate}</div>
+                        <div class="job-description">${jobDescription}</div>
+                    </div>
+                `;
+            }
+            
+            // Education
+            let educationHTML = '';
+            for (let i = 1; i <= educationCount; i++) {
+                if (!document.getElementById(`degree${i}`)) continue;
+                
+                let degree = document.getElementById(`degree${i}`).value || 'Degree';
+                let fieldOfStudy = document.getElementById(`fieldOfStudy${i}`).value || 'Field of Study';
+                let school = document.getElementById(`school${i}`).value || 'School Name';
+                
+                // Handle "Other" options
+                if (degree === 'Other' && document.getElementById(`otherDegree${i}`)) {
+                    const otherDegree = document.getElementById(`otherDegree${i}`).value;
+                    if (otherDegree) {
+                        degree = otherDegree;
+                    }
+                }
+                
+                if (fieldOfStudy === 'Other' && document.getElementById(`otherField${i}`)) {
+                    const otherField = document.getElementById(`otherField${i}`).value;
+                    if (otherField) {
+                        fieldOfStudy = otherField;
+                    }
+                }
+                
+                if (school === 'Other' && document.getElementById(`otherSchool${i}`)) {
+                    const otherSchool = document.getElementById(`otherSchool${i}`).value;
+                    if (otherSchool) {
+                        school = otherSchool;
+                    }
+                }
+                
+                const educationStartDate = document.getElementById(`educationStartDate${i}`).value || 'Start Date';
+                const educationEndDate = document.getElementById(`educationEndDate${i}`).value || 'End Date';
+                
+                educationHTML += `
+                    <div class="education-item">
+                        <div class="degree">${degree} in ${fieldOfStudy}</div>
+                        <div class="school">${school}</div>
+                        <div class="date">${educationStartDate} - ${educationEndDate}</div>
+                    </div>
+                `;
+            }
+            
+            // Certifications
+            let certificationsHTML = '';
+            for (let i = 1; i <= certificationCount; i++) {
+                if (!document.getElementById(`certificationName${i}`)) continue;
+                
+                const certName = document.getElementById(`certificationName${i}`).value;
+                const certIssuer = document.getElementById(`certificationIssuer${i}`).value;
+                const certDate = document.getElementById(`certificationDate${i}`).value;
+                const certLink = document.getElementById(`certificationLink${i}`).value;
+                
+                if (certName) {
+                    let linkHTML = '';
+                    if (certLink) {
+                        if (certLink.startsWith('http')) {
+                            linkHTML = `<div><a href="${certLink}" target="_blank" class="cert-link">Verify Certification</a></div>`;
+                        } else {
+                            linkHTML = `<div class="cert-link">License ID: ${certLink}</div>`;
+                        }
+                    }
+                    
+                    certificationsHTML += `
+                        <div class="certification-item">
+                            <div class="cert-name"><strong>${certName}</strong></div>
+                            <div class="cert-issuer">${certIssuer}</div>
+                            <div class="cert-date">${certDate}</div>
+                            ${linkHTML}
+                        </div>
+                    `;
+                }
+            }
+            
+            // Achievements
+            let achievementsHTML = '';
+            for (let i = 1; i <= achievementCount; i++) {
+                if (!document.getElementById(`achievement${i}`)) continue;
+                
+                const achievement = document.getElementById(`achievement${i}`).value;
+                const achievementIssuer = document.getElementById(`achievementIssuer${i}`).value;
+                const achievementDate = document.getElementById(`achievementDate${i}`).value;
+                const achievementDesc = document.getElementById(`achievementDescription${i}`).value;
+                
+                if (achievement) {
+                    achievementsHTML += `
+                        <div class="achievement-item">
+                            <div class="achievement-name"><strong>${achievement}</strong></div>
+                            <div class="achievement-issuer">${achievementIssuer} | ${achievementDate}</div>
+                            <div class="achievement-description">${achievementDesc}</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Skills
+            let skillsHTML = '';
+            for (let i = 1; i <= skillCount; i++) {
+                if (!document.getElementById(`skill${i}`)) continue;
+                
+                const skill = document.getElementById(`skill${i}`).value;
+                if (skill) {
+                    skillsHTML += `<span class="skill">${skill}</span>`;
+                }
+            }
+            
+            // Projects
+            let projectsHTML = '';
+            for (let i = 1; i <= projectCount; i++) {
+                if (!document.getElementById(`projectName${i}`)) continue;
+                
+                const projectName = document.getElementById(`projectName${i}`).value || 'Project Name';
+                const projectDescription = document.getElementById(`projectDescription${i}`).value || 'Project description...';
+                const projectTechnologies = document.getElementById(`projectTechnologies${i}`).value;
+                const projectRole = document.getElementById(`projectRole${i}`).value;
+                
+                let technologiesHTML = '';
+                if (projectTechnologies) {
+                    const techArray = projectTechnologies.split(',').map(tech => tech.trim());
+                    technologiesHTML = `
+                        <div class="technologies-list">
+                            ${techArray.map(tech => `<span class="technology">${tech}</span>`).join('')}
+                        </div>
+                    `;
+                }
+                
+                let roleHTML = '';
+                if (projectRole) {
+                    roleHTML = `<div class="project-role"><strong>Role:</strong> ${projectRole}</div>`;
+                }
+                
+                projectsHTML += `
+                    <div class="project-item">
+                        <div class="project-name"><strong>${projectName}</strong></div>
+                        ${technologiesHTML}
+                        ${roleHTML}
+                        <div class="project-description">${projectDescription}</div>
+                    </div>
+                `;
+            }
+            
+            // Social Links
+            let socialLinksHTML = '';
+            if (linkedin) {
+                socialLinksHTML += `<a href="${linkedin}" target="_blank">LinkedIn</a> | `;
+            }
+            if (github) {
+                socialLinksHTML += `<a href="${github}" target="_blank">GitHub</a>`;
+            }
+            
+            // Build the resume preview
+            resumePreview.innerHTML = `
+                <div class="resume-header">
+                    <h2>${fullName}</h2>
+                    <p>${address} | ${phone} | ${email}</p>
+                    ${socialLinksHTML ? `<p>${socialLinksHTML}</p>` : ''}
+                </div>
+                
+                <div class="resume-section">
+                    <h3>Professional Summary</h3>
+                    <p>${summary}</p>
+                </div>
+                
+                ${languagesHTML ? `
+                <div class="resume-section">
+                    <h3>Languages</h3>
+                    ${languagesHTML}
+                </div>
+                ` : ''}
+                
+                ${experiencesHTML ? `
+                <div class="resume-section">
+                    <h3>Work Experience</h3>
+                    ${experiencesHTML}
+                </div>
+                ` : ''}
+                
+                ${educationHTML ? `
+                <div class="resume-section">
+                    <h3>Education</h3>
+                    ${educationHTML}
+                </div>
+                ` : ''}
+                
+                ${certificationsHTML ? `
+                <div class="resume-section">
+                    <h3>Certifications</h3>
+                    ${certificationsHTML}
+                </div>
+                ` : ''}
+                
+                ${achievementsHTML ? `
+                <div class="resume-section">
+                    <h3>Achievements & Awards</h3>
+                    ${achievementsHTML}
+                </div>
+                ` : ''}
+                
+                ${skillsHTML ? `
+                <div class="resume-section">
+                    <h3>Skills</h3>
+                    <div class="skills-list">
+                        ${skillsHTML}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${projectsHTML ? `
+                <div class="resume-section">
+                    <h3>Projects</h3>
+                    ${projectsHTML}
+                </div>
+                ` : ''}
+            `;
+        }
+    </script>
+</body>
+</html>

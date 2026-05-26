@@ -1,0 +1,1392 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeCraft | Advanced Resume Builder</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Open+Sans:wght@300;400;600&family=Lato:wght@400;700&family=Montserrat:wght@400;500;700&family=Merriweather:wght@400;700&family=Roboto:wght@400;500&family=Poppins:wght@400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Load html2pdf.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Load Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --accent: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effects */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Text Gradients */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 15px); }
+            100% { transform: translate(0, -0px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.5); }
+        }
+
+        /* Animation Classes */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .slide-in {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        .glow {
+            animation: glow 3s infinite;
+        }
+
+        /* Custom Components */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .template-preview {
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .template-preview:hover {
+            transform: perspective(1000px) rotateY(10deg) rotateX(5deg);
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            bottom: -10px;
+            left: 20%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        /* Template Styles */
+        #resume-preview-container {
+            min-height: 11in;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+        }
+
+        .resume-page {
+            width: 8.5in;
+            min-height: 11in;
+            background-color: white;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-size: 11pt;
+            border-radius: 12px;
+        }
+
+        /* ----- TEMPLATE 3: Elegant Single-Page with Timeline ----- */
+        .template-3 { 
+            font-family: 'Roboto', sans-serif; 
+            line-height: 1.8; 
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+        }
+        .template-3 .resume-container { 
+            padding: 0; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .template-3 header { 
+            text-align: center; 
+            padding: 2rem 0; 
+            background: linear-gradient(to right, #4a69bd, #6a89cc); 
+            margin-bottom: 2rem; 
+            color: white;
+        }
+        .template-3 .header-content h1 { 
+            font-family: 'Merriweather', serif; 
+            font-size: 3rem; 
+            color: white; 
+        }
+        .template-3 h2 { 
+            font-family: 'Merriweather', serif; 
+            border-left: 4px solid #4a69bd; 
+            padding-left: 1rem; 
+        }
+        .template-3 .timeline { 
+            position: relative; 
+            padding-left: 30px; 
+            border-left: 2px solid #ccc; 
+            margin: 0 2rem; 
+        }
+        .template-3 .timeline-item::before { 
+            content: ''; 
+            position: absolute; 
+            left: -39px; 
+            top: 0; 
+            width: 16px; 
+            height: 16px; 
+            background-color: #4a69bd; 
+            border-radius: 50%; 
+            border: 3px solid #fff; 
+        }
+        .template-3 .skill-item { 
+            background-color: #f0f4f7; 
+            padding: 0.5rem 1rem; 
+            border-radius: 20px; 
+        }
+
+        /* ----- TEMPLATE 4: Bold Creative Style ----- */
+        .template-4 { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        .template-4 .resume-container { 
+            padding: 3rem; 
+            display: grid; 
+            gap: 2rem; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .template-4 h1 { 
+            font-size: 3rem; 
+            color: #2c3e50; 
+        }
+        .template-4 .job-title { 
+            color: #e67e22; 
+            font-weight: 700; 
+        }
+        .template-4 h2 { 
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .template-4 h2::after { 
+            content: ''; 
+            position: absolute; 
+            left: 0; 
+            bottom: 0; 
+            width: 50px; 
+            height: 4px; 
+            background-color: #e67e22; 
+        }
+        .template-4 .section-card { 
+            border-left: 3px solid #e67e22; 
+            padding-left: 1.5rem; 
+            background-color: rgba(255, 255, 255, 0.7); 
+            padding: 2rem; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        .template-4 .skill-tag { 
+            background-color: #2c3e50; 
+            color: #fff; 
+            padding: 0.3rem 0.8rem; 
+            border-radius: 20px; 
+        }
+        
+        /* Utility classes */
+        .list-unstyled { list-style: none; padding: 0; margin: 0; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .skill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+
+        /* NEW: Clickable links in PDF */
+        .pdf-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .pdf-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+            .input-panel {
+                order: 1;
+            }
+            .preview-panel {
+                order: 2;
+                min-height: 900px;
+            }
+        }
+
+        /* Form Styling */
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: scale(1.02);
+        }
+
+        .template-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-option:hover {
+            background-color: #eff6ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* NEW STYLES FOR REPEATABLE SECTIONS */
+        .repeatable-section {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .repeatable-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .repeatable-section-title {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .remove-btn {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .add-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .add-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Floating Background Elements */
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-bg div {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+        }
+
+        .bg-1 {
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-2 {
+            top: 60%;
+            right: 10%;
+            width: 250px;
+            height: 250px;
+            background: var(--secondary);
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .bg-3 {
+            bottom: 20%;
+            left: 20%;
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            animation: float 12s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Floating Background Elements -->
+    <div class="floating-bg">
+        <div class="bg-1"></div>
+        <div class="bg-2"></div>
+        <div class="bg-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass sticky top-0 z-50 py-4 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <i class="fas fa-file-alt text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-white">Resume<span class="text-yellow-300">Builder</span></span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="home.html" class="nav-link text-white font-medium">Home</a>
+                <a href="#" class="nav-link text-white font-medium">Templates</a>
+                 
+                
+            </div>
+            
+            
+            </div>
+        </div>
+    </header>
+
+    <div class="app-grid min-h-screen grid lg:grid-cols-2 max-w-7xl mx-auto py-8 px-4 md:px-8">
+        
+        <!-- Input Panel -->
+        <div class="input-panel p-6 lg:p-8 glass-card rounded-2xl overflow-y-auto slide-in">
+            <h1 class="text-3xl font-bold mb-6 text-gray-800 border-b pb-2 gradient-text">Resume Data Input</h1>
+
+            <!-- Template Selector -->
+            <div class="mb-8 p-4 bg-gradient-to-r from-blue-50 to-indigo-100 border-l-4 border-blue-500 rounded-lg fade-in">
+                <h2 class="text-xl font-semibold mb-3 text-blue-800">1. Select Template Style</h2>
+                <div class="flex flex-wrap gap-3">
+                    <label class="template-option p-3 bg-white rounded-lg shadow cursor-pointer transition duration-300 hover:bg-blue-100 card-hover">
+                        <input type="radio" name="template" value="template-3" class="mr-2" checked onchange="updatePreview()">
+                        <div>
+                            <div class="font-medium">Elegant</div>
+                        </div>
+                    </label>
+                    <label class="template-option p-3 bg-white rounded-lg shadow cursor-pointer transition duration-300 hover:bg-blue-100 card-hover">
+                        <input type="radio" name="template" value="template-4" class="mr-2" onchange="updatePreview()">
+                        <div>
+                            <div class="font-medium">Creative</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="resume-form" oninput="updatePreview()">
+                <!-- Personal Information -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">2. Personal Information</h2>
+                    <input type="text" id="name" placeholder="Full Name (e.g., John Doe)" value="User surname" class="form-input">
+                    <input type="text" id="role" placeholder="Desired Role (e.g., Software Engineer)" value="Software Engineer" class="form-input">
+                    <input type="email" id="email" placeholder="Email (e.g., john@example.com)" value="user.doe@example.com" class="form-input">
+                    <input type="tel" id="phone" placeholder="Phone (e.g., (123) 456-7890)" value="(123) 456-7890" class="form-input">
+                    <!-- NEW: Address field -->
+                    <input type="text" id="address" placeholder="Address (e.g., 123 Main St, City, State, ZIP)" value="123 Main Street, New York, NY 10001" class="form-input">
+                    <input type="text" id="linkedin" placeholder="LinkedIn URL (e.g., https://linkedin.com/in/johndoe)" value="https://linkedin.com/in/johndoe" class="form-input">
+                    <input type="text" id="github" placeholder="GitHub URL (e.g., https://github.com/johndoe)" value="https://github.com/johndoe" class="form-input">
+                    <input type="text" id="portfolio" placeholder="Portfolio URL (e.g., https://johndoe.com)" value="https://johndoe.com" class="form-input">
+                </section>
+
+                <!-- NEW: Professional Summary Section -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">3. Professional Summary</h2>
+                    <textarea id="summary" placeholder="Write a brief professional summary (2-3 lines)..." class="form-input h-24 resize-none">Experienced software engineer with 5+ years in full-stack development, specializing in React, Node.js, and cloud technologies. Passionate about building scalable applications and mentoring junior developers.</textarea>
+                </section>
+
+                <!-- Skills -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">4. Skills</h2>
+                    <label for="skills_technical" class="block text-sm font-medium text-gray-700 mb-1">Technical Skills (separate with commas)</label>
+                    <textarea id="skills_technical" placeholder="e.g., JavaScript, React, Python, AWS" class="form-input h-24 resize-none">JavaScript, React, Tailwind CSS, Node.js, PostgreSQL</textarea>
+                    
+                    <label for="skills_soft" class="block text-sm font-medium text-gray-700 mb-1 mt-4">Soft Skills (separate with commas)</label>
+                    <textarea id="skills_soft" placeholder="e.g., Leadership, Communication, Agile" class="form-input h-20 resize-none">Problem-Solving, Leadership, Teamwork, Communication</textarea>
+                </section>
+
+                <!-- NEW: Updated Certifications Section with multiple entries -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">5. Certifications</h2>
+                    <div id="certifications-container">
+                        <div class="repeatable-section">
+                            <div class="repeatable-section-header">
+                                <span class="repeatable-section-title">Certification #1</span>
+                                <button type="button" class="remove-btn" onclick="removeSection(this, 'certifications-container')">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                            <input type="text" id="cert1_name" placeholder="Certification Name" value="AWS Certified Developer - Associate" class="form-input">
+                            <input type="text" id="cert1_organization" placeholder="Issuing Organization" value="Amazon Web Services" class="form-input">
+                            <input type="month" id="cert1_date" placeholder="Date Earned" value="2023-06" class="form-input">
+                            <input type="text" id="cert1_link" placeholder="Verification Link / License ID" value="https://www.credly.com/users/johndoe/badges" class="form-input">
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addCertification()">
+                        <i class="fas fa-plus"></i> Add Another Certification
+                    </button>
+                </section>
+
+                <!-- Work Experience -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">6. Work Experience (Latest)</h2>
+                    <input type="text" id="exp1_company" placeholder="Company Name" value="Tech Innovators Inc." class="form-input">
+                    <input type="text" id="exp1_role" placeholder="Role/Title" value="Senior Frontend Developer" class="form-input">
+                    <input type="text" id="exp1_duration" placeholder="Duration (e.g., Jan 2022 - Present)" value="Jan 2022 - Present" class="form-input">
+                    <textarea id="exp1_achievements" placeholder="Key achievements (one achievement per line)" class="form-input h-24 resize-none">Led a team of 5, increasing project delivery speed by 30%.
+Designed and implemented a modular UI library using React.
+Reduced page load times by 40% through code splitting.</textarea>
+                    
+                    <!-- AI Suggestion Feature UI -->
+                    <h3 class="text-lg font-semibold mb-2 mt-4 text-gray-700 border-t pt-4">AI Resume Editor</h3>
+                    <label for="suggestion_input" class="block text-sm font-medium text-gray-700 mt-2">Enter a basic duty (e.g., managed a team):</label>
+                    <div class="flex space-x-2 mt-1">
+                        <input type="text" id="suggestion_input" placeholder="e.g., Managed the website." class="flex-grow form-input">
+                        <button type="button" onclick="handleSuggestionRequest()" id="ai-button" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 px-4 rounded-md text-sm transition duration-300 shadow-md btn-glow">
+                            Get AI Suggestion
+                        </button>
+                    </div>
+                    <p id="ai-output" class="mt-2 p-2 bg-purple-50 border border-purple-300 rounded-md text-sm text-purple-800 hidden"></p>
+                </section>
+
+                <!-- NEW: Updated Education Section with multiple entries -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">7. Education</h2>
+                    <div id="education-container">
+                        <div class="repeatable-section">
+                            <div class="repeatable-section-header">
+                                <span class="repeatable-section-title">Education #1</span>
+                                <button type="button" class="remove-btn" onclick="removeSection(this, 'education-container')">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                            <input type="text" id="edu1_degree" placeholder="Degree" value="Master of Science in Computer Science" class="form-input">
+                            <input type="text" id="edu1_university" placeholder="University" value="University of Technology" class="form-input">
+                            <input type="text" id="edu1_year" placeholder="Year" value="2019" class="form-input">
+                            <input type="text" id="edu1_cgpa" placeholder="CGPA (optional)" value="3.8/4.0" class="form-input">
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addEducation()">
+                        <i class="fas fa-plus"></i> Add Another Education
+                    </button>
+                </section>
+
+                <!-- NEW: Achievements & Awards Section -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">8. Achievements & Awards</h2>
+                    <div id="achievements-container">
+                        <div class="repeatable-section">
+                            <div class="repeatable-section-header">
+                                <span class="repeatable-section-title">Achievement #1</span>
+                                <button type="button" class="remove-btn" onclick="removeSection(this, 'achievements-container')">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                            <input type="text" id="ach1_title" placeholder="Achievement or Award" value="Employee of the Year" class="form-input">
+                            <input type="text" id="ach1_organization" placeholder="Issuing Organization" value="Tech Innovators Inc." class="form-input">
+                            <input type="month" id="ach1_date" placeholder="Date Received" value="2023-12" class="form-input">
+                            <textarea id="ach1_description" placeholder="Description of award or achievement" class="form-input h-16 resize-none">Recognized for outstanding performance and leadership in delivering critical projects ahead of schedule.</textarea>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addAchievement()">
+                        <i class="fas fa-plus"></i> Add Another Achievement
+                    </button>
+                </section>
+
+                <!-- NEW: Updated Projects Section with multiple entries -->
+                <section class="form-section fade-in">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700">9. Project Showcase</h2>
+                    <div id="projects-container">
+                        <div class="repeatable-section">
+                            <div class="repeatable-section-header">
+                                <span class="repeatable-section-title">Project #1</span>
+                                <button type="button" class="remove-btn" onclick="removeSection(this, 'projects-container')">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                            <input type="text" id="proj1_title" placeholder="Project Title" value="Real-time Collaborative Editor" class="form-input">
+                            <input type="text" id="proj1_link" placeholder="Project Link" value="https://github.com/project/editor" class="form-input">
+                            <textarea id="proj1_description" placeholder="Short Description" class="form-input h-16 resize-none">Built a serverless text editor using WebSockets and React Hooks for multi-user collaboration.</textarea>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addProject()">
+                        <i class="fas fa-plus"></i> Add Another Project
+                    </button>
+                </section>
+            </form>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="preview-panel p-6 lg:p-8 glass-card rounded-2xl sticky top-8 h-[calc(100vh-4rem)] overflow-y-auto fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Live Preview</h2>
+                <button onclick="generatePDF()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md btn-glow glow">
+                    <i class="fa-solid fa-file-pdf mr-2"></i> Download as PDF
+                </button>
+            </div>
+            
+            <div id="resume-preview-container" class="transition-colors duration-500">
+                <div id="resume-preview" class="resume-page shadow-2xl">
+                    <!-- Resume content will be injected here -->
+                    <div class="flex flex-col items-center justify-center h-full p-12 text-gray-600">
+                        <i class="fa-solid fa-file-lines text-6xl mb-4 text-blue-500"></i>
+                        <p class="text-lg font-semibold text-center">Start filling the form on the left to see your resume here!</p>
+                        <p class="text-sm mt-2 text-center">Current Template: <span id="current-template-name" class="font-medium">Elegant</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center pulse">
+            <i class="fas fa-plus text-xl"></i>
+        </button>
+    </div>
+
+    <script>
+        // --- AI GENERATION LOGIC ---
+
+        // IMPORTANT: Leave apiKey as an empty string. The environment will handle the key securely.
+        const apiKey = ""; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        /**
+         * Retries a promise function with exponential backoff.
+         */
+        async function exponentialBackoffFetch(fn, retries = 5, delay = 1000) {
+            try {
+                const response = await fn();
+                if (!response.ok) {
+                    if (retries > 0) {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return exponentialBackoffFetch(fn, retries - 1, delay * 2);
+                    }
+                    throw new Error(`API request failed after all retries: ${response.status} ${response.statusText}`);
+                }
+                return response;
+            } catch (error) {
+                if (retries > 0) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return exponentialBackoffFetch(fn, retries - 1, delay * 2);
+                }
+                throw error;
+            }
+        }
+
+        /**
+         * Calls the Gemini API to improve a resume bullet point.
+         */
+        async function getAISuggestion(userText) {
+            if (!userText.trim()) {
+                // Using a custom message box instead of alert()
+                document.getElementById('ai-output').textContent = "Error: Please enter some text to get an AI suggestion.";
+                document.getElementById('ai-output').classList.remove('hidden');
+                return "Suggestion failed. No input provided.";
+            }
+            
+            // 1. Define the system's role and rules
+            const systemPrompt = "You are a world-class professional resume editor. Your task is to take a basic job duty provided by the user and rewrite it into a strong, impactful, and quantifiable resume achievement bullet point. Your response must be only the improved bullet point text, starting with a strong action verb. Do not include any introductory or concluding remarks.";
+            
+            // 2. Define the specific user query
+            const userQuery = `Improve this job duty for a resume: "${userText}"`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                // Use system instruction to guide the output format
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+            };
+
+            const fetchRequest = () => fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            // 3. Call the API with exponential backoff
+            try {
+                const response = await exponentialBackoffFetch(fetchRequest);
+                const result = await response.json();
+                
+                const generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (generatedText) {
+                    // The AI returns a single, improved bullet point
+                    return generatedText.trim();
+                } else {
+                    console.error("AI response structure missing expected text:", result);
+                    return "Suggestion failed. Could not retrieve text from AI.";
+                }
+
+            } catch (error) {
+                console.error("Error fetching AI suggestion:", error);
+                return "Suggestion failed. Please try again later.";
+            }
+        }
+
+        /**
+         * Handler function for the AI button click.
+         */
+        async function handleSuggestionRequest() {
+            const inputField = document.getElementById('suggestion_input');
+            const outputField = document.getElementById('ai-output');
+            const button = document.getElementById('ai-button');
+            const userText = inputField.value;
+
+            // Simple validation
+            if (!userText.trim()) {
+                outputField.textContent = "Please enter some text to improve.";
+                outputField.classList.remove('hidden');
+                return;
+            }
+
+            // UI feedback while loading
+            button.disabled = true;
+            button.textContent = "Generating...";
+            outputField.classList.remove('hidden');
+            outputField.className = 'mt-2 p-2 bg-purple-100 border border-purple-300 rounded-md text-sm text-purple-800';
+            outputField.textContent = "Please wait, contacting AI editor...";
+
+            const improvedBullet = await getAISuggestion(userText);
+            
+            // Display result
+            outputField.textContent = improvedBullet;
+            outputField.className = 'mt-2 p-2 bg-green-100 border border-green-300 rounded-md text-sm text-green-800';
+
+            button.textContent = "Get AI Suggestion";
+            button.disabled = false;
+        }
+
+        // --- REPEATABLE SECTIONS LOGIC ---
+
+        /**
+         * Removes a repeatable section
+         */
+        function removeSection(button, containerId) {
+            const section = button.closest('.repeatable-section');
+            const container = document.getElementById(containerId);
+            
+            // Don't remove if it's the last section
+            if (container.children.length > 1) {
+                section.remove();
+                updatePreview();
+            } else {
+                alert("You need to have at least one entry in this section.");
+            }
+        }
+
+        /**
+         * Adds a new education section
+         */
+        function addEducation() {
+            const container = document.getElementById('education-container');
+            const count = container.children.length + 1;
+            
+            const newSection = document.createElement('div');
+            newSection.className = 'repeatable-section';
+            newSection.innerHTML = `
+                <div class="repeatable-section-header">
+                    <span class="repeatable-section-title">Education #${count}</span>
+                    <button type="button" class="remove-btn" onclick="removeSection(this, 'education-container')">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <input type="text" id="edu${count}_degree" placeholder="Degree" class="form-input">
+                <input type="text" id="edu${count}_university" placeholder="University" class="form-input">
+                <input type="text" id="edu${count}_year" placeholder="Year" class="form-input">
+                <input type="text" id="edu${count}_cgpa" placeholder="CGPA (optional)" class="form-input">
+            `;
+            
+            container.appendChild(newSection);
+            updatePreview();
+        }
+
+        /**
+         * Adds a new certification section
+         */
+        function addCertification() {
+            const container = document.getElementById('certifications-container');
+            const count = container.children.length + 1;
+            
+            const newSection = document.createElement('div');
+            newSection.className = 'repeatable-section';
+            newSection.innerHTML = `
+                <div class="repeatable-section-header">
+                    <span class="repeatable-section-title">Certification #${count}</span>
+                    <button type="button" class="remove-btn" onclick="removeSection(this, 'certifications-container')">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <input type="text" id="cert${count}_name" placeholder="Certification Name" class="form-input">
+                <input type="text" id="cert${count}_organization" placeholder="Issuing Organization" class="form-input">
+                <input type="month" id="cert${count}_date" placeholder="Date Earned" class="form-input">
+                <input type="text" id="cert${count}_link" placeholder="Verification Link / License ID" class="form-input">
+            `;
+            
+            container.appendChild(newSection);
+            updatePreview();
+        }
+
+        /**
+         * Adds a new achievement section
+         */
+        function addAchievement() {
+            const container = document.getElementById('achievements-container');
+            const count = container.children.length + 1;
+            
+            const newSection = document.createElement('div');
+            newSection.className = 'repeatable-section';
+            newSection.innerHTML = `
+                <div class="repeatable-section-header">
+                    <span class="repeatable-section-title">Achievement #${count}</span>
+                    <button type="button" class="remove-btn" onclick="removeSection(this, 'achievements-container')">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <input type="text" id="ach${count}_title" placeholder="Achievement or Award" class="form-input">
+                <input type="text" id="ach${count}_organization" placeholder="Issuing Organization" class="form-input">
+                <input type="month" id="ach${count}_date" placeholder="Date Received" class="form-input">
+                <textarea id="ach${count}_description" placeholder="Description of award or achievement" class="form-input h-16 resize-none"></textarea>
+            `;
+            
+            container.appendChild(newSection);
+            updatePreview();
+        }
+
+        /**
+         * Adds a new project section
+         */
+        function addProject() {
+            const container = document.getElementById('projects-container');
+            const count = container.children.length + 1;
+            
+            const newSection = document.createElement('div');
+            newSection.className = 'repeatable-section';
+            newSection.innerHTML = `
+                <div class="repeatable-section-header">
+                    <span class="repeatable-section-title">Project #${count}</span>
+                    <button type="button" class="remove-btn" onclick="removeSection(this, 'projects-container')">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+                <input type="text" id="proj${count}_title" placeholder="Project Title" class="form-input">
+                <input type="text" id="proj${count}_link" placeholder="Project Link" class="form-input">
+                <textarea id="proj${count}_description" placeholder="Short Description" class="form-input h-16 resize-none"></textarea>
+            `;
+            
+            container.appendChild(newSection);
+            updatePreview();
+        }
+
+        // --- DATA COLLECTION AND PROCESSING ---
+        function collectData() {
+            const getVal = (id) => document.getElementById(id)?.value || '';
+            const splitLines = (text) => text.split('\n').map(l => l.trim()).filter(l => l);
+            const splitCommas = (text) => text.split(',').map(s => s.trim()).filter(s => s);
+
+            // Collect multiple education entries
+            const education = [];
+            const educationContainers = document.querySelectorAll('#education-container .repeatable-section');
+            educationContainers.forEach((container, index) => {
+                const i = index + 1;
+                education.push({
+                    degree: getVal(`edu${i}_degree`),
+                    university: getVal(`edu${i}_university`),
+                    year: getVal(`edu${i}_year`),
+                    cgpa: getVal(`edu${i}_cgpa`),
+                });
+            });
+
+            // Collect multiple certification entries
+            const certifications = [];
+            const certificationContainers = document.querySelectorAll('#certifications-container .repeatable-section');
+            certificationContainers.forEach((container, index) => {
+                const i = index + 1;
+                certifications.push({
+                    name: getVal(`cert${i}_name`),
+                    organization: getVal(`cert${i}_organization`),
+                    date: getVal(`cert${i}_date`),
+                    link: getVal(`cert${i}_link`),
+                });
+            });
+
+            // Collect multiple achievement entries
+            const achievements = [];
+            const achievementContainers = document.querySelectorAll('#achievements-container .repeatable-section');
+            achievementContainers.forEach((container, index) => {
+                const i = index + 1;
+                achievements.push({
+                    title: getVal(`ach${i}_title`),
+                    organization: getVal(`ach${i}_organization`),
+                    date: getVal(`ach${i}_date`),
+                    description: getVal(`ach${i}_description`),
+                });
+            });
+
+            // Collect multiple project entries
+            const projects = [];
+            const projectContainers = document.querySelectorAll('#projects-container .repeatable-section');
+            projectContainers.forEach((container, index) => {
+                const i = index + 1;
+                projects.push({
+                    title: getVal(`proj${i}_title`),
+                    link: getVal(`proj${i}_link`),
+                    description: getVal(`proj${i}_description`),
+                });
+            });
+
+            return {
+                personal: {
+                    name: getVal('name'),
+                    role: getVal('role'),
+                    email: getVal('email'),
+                    phone: getVal('phone'),
+                    address: getVal('address'), // NEW: Address field
+                    linkedin: getVal('linkedin'),
+                    github: getVal('github'),
+                    portfolio: getVal('portfolio'),
+                },
+                summary: getVal('summary'), // NEW: Professional summary
+                skills: {
+                    technical: splitCommas(getVal('skills_technical')),
+                    soft: splitCommas(getVal('skills_soft')),
+                },
+                certifications: certifications, // UPDATED: Now an array
+                experience: [{
+                    company: getVal('exp1_company'),
+                    role: getVal('exp1_role'),
+                    duration: getVal('exp1_duration'),
+                    achievements: splitLines(getVal('exp1_achievements')),
+                }],
+                education: education, // UPDATED: Now an array
+                achievements: achievements, // NEW: Achievements array
+                projects: projects, // UPDATED: Now an array
+            };
+        }
+
+        // --- TEMPLATE MARKUP FUNCTIONS ---
+
+        // Helper for rendering achievements list
+        const renderAchievements = (achievements, bulletType = 'ul') => {
+            if (!achievements.length) return '';
+            const listItems = achievements.map(a => `<li>${a}</li>`).join('');
+            if (bulletType === 'ul') return `<ul class="list-disc ml-5 mt-2 space-y-1">${listItems}</ul>`;
+            if (bulletType === 'achievement-list') return `<ul class="achievement-list mt-2 space-y-1">${listItems}</ul>`;
+            return listItems;
+        };
+
+        // Helper for rendering skill list
+        const renderSkills = (skills, className = 'skill-item') => 
+            skills.length ? `<div class="skill-list">${skills.map(s => `<span class="${className}">${s}</span>`).join('')}</div>` : '';
+
+        // Helper function to format URLs for PDF - FIXED VERSION
+        const formatURL = (url) => {
+            if (!url) return '';
+            
+            // If it's already a full URL, return as is
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                return url;
+            }
+            
+            // If it's a domain without protocol, add https://
+            if (url.includes('.') && !url.includes(' ')) {
+                return `https://${url}`;
+            }
+            
+            // For simple usernames like "github.com/username", make proper URL
+            if (url.includes('.com/')) {
+                return `https://${url}`;
+            }
+            
+            // Return empty if it doesn't look like a valid URL
+            return '';
+        };
+
+        // 3. Elegant Single-Page with Timeline (template-3)
+        function renderTemplate3(data) {
+            const p = data.personal;
+            const exp = data.experience[0];
+            const edu = data.education[0];
+            const proj = data.projects[0];
+
+            // Format URLs for PDF
+            const linkedinURL = formatURL(p.linkedin);
+            const githubURL = formatURL(p.github);
+            const portfolioURL = formatURL(p.portfolio);
+
+            return `
+                <div class="resume-container template-3">
+                    <header>
+                        <div class="header-content">
+                            <h1>${p.name || 'Your Name'}</h1>
+                            <p class="text-xl text-white">${p.role || 'Your Role'}</p>
+                            <div class="contact-info flex flex-wrap justify-center gap-4 mt-4 text-white">
+                                ${p.email ? `<span>📧 ${p.email}</span>` : ''}
+                                ${p.phone ? `<span>📞 ${p.phone}</span>` : ''}
+                                ${p.address ? `<span>📍 ${p.address}</span>` : ''}
+                                ${linkedinURL ? `<span><a href="${linkedinURL}" target="_blank" class="pdf-link text-white">LinkedIn</a></span>` : ''}
+                                ${githubURL ? `<span><a href="${githubURL}" target="_blank" class="pdf-link text-white">GitHub</a></span>` : ''}
+                                ${portfolioURL ? `<span><a href="${portfolioURL}" target="_blank" class="pdf-link text-white">Portfolio</a></span>` : ''}
+                            </div>
+                        </div>
+                    </header>
+                    <div class="px-8">
+                        <!-- NEW: Professional Summary -->
+                        ${data.summary ? `
+                        <section class="summary mb-8">
+                            <h2>Professional Summary</h2>
+                            <p class="text-gray-700">${data.summary}</p>
+                        </section>
+                        ` : ''}
+
+                        <section class="work-experience mb-8">
+                            <h2>Work Experience</h2>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-header flex-between">
+                                        <h3 class="text-lg font-semibold">${exp.role || 'Your Role'}${exp.company ? `, ${exp.company}` : ''}</h3>
+                                        <span class="date text-gray-600">${exp.duration || ''}</span>
+                                    </div>
+                                    ${renderAchievements(exp.achievements)}
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="education mb-8">
+                            <h2>Education</h2>
+                            <div class="timeline">
+                                ${data.education.map(edu => `
+                                <div class="timeline-item">
+                                    <div class="timeline-header flex-between">
+                                        <h3 class="text-lg font-semibold">${edu.degree || 'Your Degree'}</h3>
+                                        <span class="date text-gray-600">${edu.year || ''}</span>
+                                    </div>
+                                    ${edu.university ? `<p class="text-gray-700"><strong>${edu.university}</strong>${edu.cgpa ? ` | CGPA: ${edu.cgpa}` : ''}</p>` : ''}
+                                </div>
+                                `).join('')}
+                            </div>
+                        </section>
+
+                        <!-- NEW: Achievements Section -->
+                        ${data.achievements.length > 0 ? `
+                        <section class="achievements mb-8">
+                            <h2>Achievements & Awards</h2>
+                            <div class="timeline">
+                                ${data.achievements.map(ach => `
+                                <div class="timeline-item">
+                                    <div class="timeline-header flex-between">
+                                        <h3 class="text-lg font-semibold">${ach.title || 'Achievement'}</h3>
+                                        <span class="date text-gray-600">${ach.date || ''}</span>
+                                    </div>
+                                    ${ach.organization ? `<p class="text-gray-700"><strong>${ach.organization}</strong></p>` : ''}
+                                    ${ach.description ? `<p class="text-gray-700">${ach.description}</p>` : ''}
+                                </div>
+                                `).join('')}
+                            </div>
+                        </section>
+                        ` : ''}
+
+                        <section class="certifications mb-8">
+                            <h2>Certifications</h2>
+                            <ul class="list-unstyled ml-8 space-y-1">
+                                ${data.certifications.map(cert => {
+                                    const certURL = formatURL(cert.link);
+                                    return `
+                                <li style="list-style: disc;">
+                                    <strong>${cert.name || 'Certification'}</strong>
+                                    ${cert.organization ? ` - ${cert.organization}` : ''}
+                                    ${cert.date ? ` (${cert.date})` : ''}
+                                    ${certURL ? `<br><a href="${certURL}" target="_blank" class="pdf-link">Verify Certification</a>` : ''}
+                                </li>
+                                `}).join('')}
+                            </ul>
+                        </section>
+
+                        <section class="skills mb-8">
+                            <h2>Skills</h2>
+                            ${renderSkills([...data.skills.technical, ...data.skills.soft])}
+                        </section>
+
+                        <section class="projects">
+                            <h2>Projects</h2>
+                            ${data.projects.map(proj => {
+                                const projectURL = formatURL(proj.link);
+                                return `
+                            <div class="project-item mb-4">
+                                <h3 class="text-lg font-semibold">${projectURL ? `<a href="${projectURL}" target="_blank" class="pdf-link text-blue-600">${proj.title || 'Project Title'}</a>` : (proj.title || 'Project Title')}</h3>
+                                ${proj.description ? `<p class="text-gray-700">${proj.description}</p>` : ''}
+                            </div>
+                            `}).join('')}
+                        </section>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. Bold Creative Style (template-4)
+        function renderTemplate4(data) {
+            const p = data.personal;
+            const exp = data.experience[0];
+            const edu = data.education[0];
+            const proj = data.projects[0];
+
+            // Format URLs for PDF
+            const linkedinURL = formatURL(p.linkedin);
+            const githubURL = formatURL(p.github);
+            const portfolioURL = formatURL(p.portfolio);
+
+            return `
+                <div class="resume-container template-4">
+                    <header class="mb-8">
+                        <h1>${p.name || 'Your Name'}</h1>
+                        <p class="job-title text-2xl">${p.role || 'Your Role'}</p>
+                        <div class="contact-info">
+                            <ul class="list-unstyled flex flex-wrap gap-4 mt-4">
+                                ${p.phone ? `<li class="flex items-center"><i class="fa-solid fa-phone mr-2"></i> ${p.phone}</li>` : ''}
+                                ${p.email ? `<li class="flex items-center"><i class="fa-solid fa-envelope mr-2"></i> ${p.email}</li>` : ''}
+                                ${p.address ? `<li class="flex items-center"><i class="fa-solid fa-location-dot mr-2"></i> ${p.address}</li>` : ''}
+                                ${linkedinURL ? `<li class="flex items-center"><i class="fa-brands fa-linkedin mr-2"></i> <a href="${linkedinURL}" target="_blank" class="pdf-link">LinkedIn</a></li>` : ''}
+                                ${githubURL ? `<li class="flex items-center"><i class="fa-brands fa-github mr-2"></i> <a href="${githubURL}" target="_blank" class="pdf-link">GitHub</a></li>` : ''}
+                                ${portfolioURL ? `<li class="flex items-center"><i class="fa-solid fa-globe mr-2"></i> <a href="${portfolioURL}" target="_blank" class="pdf-link">Portfolio</a></li>` : ''}
+                            </ul>
+                        </div>
+                    </header>
+
+                    <!-- NEW: Professional Summary -->
+                    ${data.summary ? `
+                    <section class="section-card summary">
+                        <h2>Professional Summary</h2>
+                        <p class="text-gray-700">${data.summary}</p>
+                    </section>
+                    ` : ''}
+
+                    <section class="section-card work-experience">
+                        <h2>Work Experience</h2>
+                        <div class="experience-item mb-4">
+                            <h3 class="text-lg font-semibold">${exp.role || 'Your Role'}${exp.company ? `, ${exp.company}` : ''}</h3>
+                            ${exp.duration ? `<p><strong>Duration:</strong> ${exp.duration}</p>` : ''}
+                            ${renderAchievements(exp.achievements)}
+                        </div>
+                    </section>
+
+                    <section class="section-card education">
+                        <h2>Education</h2>
+                        ${data.education.map(edu => `
+                        <div class="education-item mb-4">
+                            <h3 class="text-lg font-semibold">${edu.degree || 'Your Degree'}</h3>
+                            ${edu.university ? `<p class="text-gray-700"><strong>${edu.university}</strong></p>` : ''}
+                            <p>${edu.year ? `Year: ${edu.year}` : ''}${edu.cgpa ? ` | CGPA: ${edu.cgpa}` : ''}</p>
+                        </div>
+                        `).join('')}
+                    </section>
+
+                    <!-- NEW: Achievements Section -->
+                    ${data.achievements.length > 0 ? `
+                    <section class="section-card achievements">
+                        <h2>Achievements & Awards</h2>
+                        ${data.achievements.map(ach => `
+                        <div class="achievement-item mb-4">
+                            <h3 class="text-lg font-semibold">${ach.title || 'Achievement'}</h3>
+                            ${ach.organization ? `<p class="text-gray-700"><strong>${ach.organization}</strong></p>` : ''}
+                            ${ach.date ? `<p><strong>Date:</strong> ${ach.date}</p>` : ''}
+                            ${ach.description ? `<p class="text-gray-700">${ach.description}</p>` : ''}
+                        </div>
+                        `).join('')}
+                    </section>
+                    ` : ''}
+
+                    <section class="section-card certifications">
+                        <h2>Certifications</h2>
+                        <ul class="list-unstyled space-y-2">
+                            ${data.certifications.map(cert => {
+                                const certURL = formatURL(cert.link);
+                                return `
+                            <li>
+                                <strong>${cert.name || 'Certification'}</strong>
+                                ${cert.organization ? ` - ${cert.organization}` : ''}
+                                ${cert.date ? ` (${cert.date})` : ''}
+                                ${certURL ? `<br><a href="${certURL}" target="_blank" class="pdf-link">Verify Certification</a>` : ''}
+                            </li>
+                            `}).join('')}
+                        </ul>
+                    </section>
+
+                    <section class="section-card skills">
+                        <h2>Skills</h2>
+                        ${data.skills.technical.length > 0 ? `
+                        <h3 class="mt-4 font-semibold">Technical Skills</h3>
+                        ${renderSkills(data.skills.technical, 'skill-tag')}
+                        ` : ''}
+                        ${data.skills.soft.length > 0 ? `
+                        <h3 class="mt-4 font-semibold">Soft Skills</h3>
+                        ${renderSkills(data.skills.soft, 'skill-tag')}
+                        ` : ''}
+                    </section>
+
+                    <section class="section-card projects">
+                        <h2>Projects</h2>
+                        ${data.projects.map(proj => {
+                            const projectURL = formatURL(proj.link);
+                            return `
+                        <div class="project-item mb-4">
+                            <h3 class="text-lg font-semibold">${projectURL ? `<a href="${projectURL}" target="_blank" class="pdf-link">${proj.title || 'Project Title'}</a>` : (proj.title || 'Project Title')}</h3>
+                            ${proj.description ? `<p class="text-gray-700">${proj.description}</p>` : ''}
+                        </div>
+                        `}).join('')}
+                    </section>
+                </div>
+            `;
+        }
+
+        // --- MAIN APPLICATION LOGIC ---
+
+        const templates = {
+            'template-3': { renderer: renderTemplate3, name: 'Elegant' },
+            'template-4': { renderer: renderTemplate4, name: 'Creative' },
+        };
+
+        function getSelectedTemplate() {
+            return document.querySelector('input[name="template"]:checked').value;
+        }
+
+        function updatePreview() {
+            const data = collectData();
+            const selectedTemplate = getSelectedTemplate();
+            const templateInfo = templates[selectedTemplate];
+            
+            if (templateInfo) {
+                const htmlContent = templateInfo.renderer(data);
+                document.getElementById('resume-preview').innerHTML = htmlContent;
+                document.getElementById('resume-preview').className = `resume-page ${selectedTemplate}`;
+                document.getElementById('current-template-name').textContent = templateInfo.name;
+            }
+        }
+
+        function generatePDF() {
+            const element = document.getElementById('resume-preview').querySelector('.resume-container');
+            if (!element) return;
+
+            // Use the name from the data for the filename
+            const data = collectData();
+            const filename = data.personal.name ? `${data.personal.name.replace(/\s/g, '_')}_Resume.pdf` : 'Resume.pdf';
+
+            var opt = {
+                margin: 0, // Set margin to 0, since the templates are 8.5in wide
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 }, // Increased quality for better output
+                html2canvas: { scale: 3, useCORS: true }, // Increased scale for better resolution
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // html2pdf can only work on one root element.
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Expose functions to the global scope
+        window.handleSuggestionRequest = handleSuggestionRequest;
+        window.generatePDF = generatePDF;
+        window.updatePreview = updatePreview;
+        window.removeSection = removeSection;
+        window.addEducation = addEducation;
+        window.addCertification = addCertification;
+        window.addAchievement = addAchievement;
+        window.addProject = addProject;
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePreview(); // Load the default template (template-3) with sample data
+        });
+    </script>
+</body>
+</html>

@@ -6,20 +6,38 @@
     <title>Login - Resume Builder</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+
+        :root {
+            --bg-dark: #090a0f;
+            --bg-card: rgba(17, 19, 31, 0.75);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.2);
+            --secondary: #a855f7;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 10% 20%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px;
+            padding: 40px;
+            background-attachment: fixed;
+            color: var(--text-main);
         }
 
         .hero-section {
@@ -31,19 +49,18 @@
 
         .hero-content h1 {
             font-size: 3.5rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, #fff, #e0e7ff);
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            opacity: 0.9;
+            font-size: 1.15rem;
+            margin-bottom: 40px;
+            line-height: 1.7;
+            color: var(--text-muted);
         }
 
         .features {
@@ -53,16 +70,17 @@
         .feature-item {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
+            margin-bottom: 24px;
+            font-size: 1.05rem;
         }
 
         .feature-item i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-right: 15px;
-            color: #7c4dff;
-            background: white;
-            padding: 10px;
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 12px;
             border-radius: 50%;
             width: 45px;
             height: 45px;
@@ -72,120 +90,133 @@
         }
 
         .cta-box {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
             padding: 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
         }
 
         .cta-box h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #7c4dff;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #fff;
         }
 
         .cta-box p {
-            font-size: 1rem;
-            margin-bottom: 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
         }
 
         .container {
-            background: #fff;
-            width: 450px;
-            padding: 4rem;
-            border-radius: 15px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            width: 460px;
+            padding: 3.5rem 3rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             margin-left: 20px;
-            margin-bottom: 48px; 
-            margin-right: 90px;
+            margin-right: 40px;
         }
 
         form {
-            margin: 0 1rem;
+            margin: 0;
         }
 
         .form-title {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 800;
             text-align: center;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            color: #333;
+            padding-bottom: 2rem;
+            color: #fff;
         }
 
         .input-group {
             position: relative;
-            margin: 1.5rem 0;
+            margin: 1.8rem 0;
         }
 
         .input-group i {
             position: absolute;
-            top: 15px;
-            left: 10px;
-            color: #6c757d;
+            top: 16px;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            transition: color 0.3s;
         }
 
         .input-group input {
             width: 100%;
-            padding: 12px 12px 12px 40px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 14px 14px 14px 44px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             outline: none;
             font-size: 1rem;
+            color: #fff;
             transition: all 0.3s ease;
         }
 
         .input-group input:focus {
-            border-color: #7c4dff;
-            box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .input-group input:focus ~ i {
+            color: var(--primary);
         }
 
         .input-group label {
             position: absolute;
-            left: 40px;
-            top: 12px;
-            color: #6c757d;
+            left: 44px;
+            top: 14px;
+            color: var(--text-muted);
             pointer-events: none;
             transition: 0.3s ease all;
+            font-size: 0.95rem;
         }
 
         .input-group input:focus ~ label,
         .input-group input:not(:placeholder-shown) ~ label {
-            top: -10px;
-            left: 35px;
+            top: -12px;
+            left: 12px;
             font-size: 0.8rem;
-            background: white;
-            padding: 0 5px;
-            color: #7c4dff;
-            font-weight: 500;
+            background: #11131f;
+            padding: 2px 8px;
+            color: var(--primary);
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
         }
 
         .btn {
             width: 100%;
             padding: 14px;
             border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #7c4dff, #6b3dff);
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.05rem;
+            font-weight: 700;
             cursor: pointer;
             margin: 1.5rem 0;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+            filter: brightness(1.1);
         }
 
         .or {
             text-align: center;
             margin: 1.5rem 0;
-            color: #6c757d;
+            color: var(--text-muted);
             position: relative;
+            font-size: 0.9rem;
         }
 
         .or::before,
@@ -193,9 +224,9 @@
             content: '';
             position: absolute;
             top: 50%;
-            width: 45%;
+            width: 40%;
             height: 1px;
-            background: #e2e8f0;
+            background: var(--border-color);
         }
 
         .or::before {
@@ -206,113 +237,91 @@
             right: 0;
         }
 
-        .icons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .icons i {
-            font-size: 1.5rem;
-            color: #6c757d;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 10px;
-            border-radius: 50%;
-            background: #f8f9fa;
-        }
-
-        .icons i:hover {
-            color: #7c4dff;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
         .links {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 1.5rem;
+            font-size: 0.95rem;
         }
 
         .links p {
             margin: 0;
-            color: #6c757d;
+            color: var(--text-muted);
         }
 
         .links a {
             background: none;
             border: none;
-            color: #7c4dff;
+            color: var(--primary);
             cursor: pointer;
             text-decoration: none;
-            font-size: 1rem;
             font-weight: 600;
-            margin-left: 5px;
+            margin-left: 6px;
             transition: color 0.3s ease;
         }
 
         .links a:hover {
-            color: #6b3dff;
+            color: var(--secondary);
             text-decoration: underline;
         }
 
         .recover {
             text-align: right;
-            margin: 0.5rem 0;
+            margin-top: 0.5rem;
         }
 
         .recover a {
-            color: #7c4dff;
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .recover a:hover {
-            color: #6b3dff;
-            text-decoration: underline;
+            color: var(--primary);
         }
         
         .message {
             padding: 12px;
-            margin: 15px 0;
-            border-radius: 8px;
+            margin-bottom: 20px;
+            border-radius: 12px;
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
         
         .error {
-            background-color: #ffebee;
-            color: #f44336;
-            border: 2px solid #f44336;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
         
         .success {
-            background-color: #e8f5e9;
-            color: #4caf50;
-            border: 2px solid #4caf50;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             body {
                 flex-direction: column;
                 justify-content: center;
+                padding: 20px;
             }
             
             .hero-section {
                 padding: 30px;
                 text-align: center;
                 max-width: 100%;
+                margin-bottom: 40px;
             }
             
             .container {
-                margin-left: 0;
-                margin-top: 20px;
+                margin: 0 auto;
                 width: 100%;
-                max-width: 450px;
+                max-width: 460px;
             }
         }
     </style>
